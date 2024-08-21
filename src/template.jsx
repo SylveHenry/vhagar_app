@@ -1,50 +1,59 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import Footer from "./footer";
 import "@fontsource-variable/inter";
 import logo from "../src/static/logo.png";
 import svg_logo from "../src/static/logo_with_word.svg";
 import bg from "../src/assets/nft/infynft/back.png";
 import ConnectButton from "./components/connect_button";
-import { useDisclosure, useToast } from "@chakra-ui/react";
 import OpenPoolModal from "./components/OpenPoolModal";
-import { useWallet } from "@solana/wallet-adapter-react";
-
-const navitems = [
-  {
-    text: "about",
-    link: "https://vhagar.finance/#about",
-  },
-  {
-    text: "tokenomics",
-    link: "https://vhagar.finance/#tokenomics",
-  },
-  {
-    text: "roadmap",
-    link: "https://vhagar.finance/#roadmap-container",
-  },
-  {
-    text: "community",
-    link: "https://vhagar.finance/#network",
-  },
-  {
-    text: "greenpaper",
-    link: "https://docs.vhagar.finance",
-  },
-];
+import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
+import { AnchorProvider, Program, web3 } from "@project-serum/anchor";
+import { Connection, Keypair, PublicKey, Transaction } from "@solana/web3.js";
+import idl from "./tokens/idl.json";
+import StakeBox from "./components/StakeBox";
+import StakeBoxWrapper from "./components/wrappers/StakeBoxWrapper";
+import navitems from "./components/navlinks";
 
 const InfyNft = () => {
+  const { wallet, connected } = useWallet();
+  const anchorWallet = useAnchorWallet();
+  // ! WEB 3 VARIABLES
+
   const [toggle, setToggle] = useState(false);
+  const [program, setProgram] = useState(null);
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const toggleClass = () => {
     setIsNavOpen(!isNavOpen);
     const closeAfterClick = document.querySelector("#nav-icon4");
     closeAfterClick?.classList?.toggle("open");
   };
   const [isScrolled, setIsScrolled] = useState(false);
-  const toast = useToast();
+
   // wallet and wallet information
-  const { wallet, connected } = useWallet();
+
+  useEffect(() => {
+    if (program == null && connected) {
+      console.log(AnchorProvider.defaultOptions());
+
+      try {
+        const connection = new Connection(web3.clusterApiUrl("devnet"));
+        const provider = new AnchorProvider(
+          connection,
+          anchorWallet,
+          AnchorProvider.defaultOptions()
+        );
+
+        const programId = new PublicKey(
+          "EN2Po9MzhmAz4HYKbQ9Fsvtek2dLqu4D2U6raFZx88Yr"
+        );
+        const anchorProgram = new Program(idl, programId, provider);
+        setProgram(anchorProgram);
+      } catch (error) {
+        console.log("Error fetching APY:", error);
+      }
+    }
+  }, [wallet, anchorWallet, connected]);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -61,12 +70,11 @@ const InfyNft = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [wallet]);
 
   return (
     <div className="bg-[#050C24] font-interfont flex flex-col justify-between items-center h-[100vh] flex-grow">
       <div className="w-full">
-        <OpenPoolModal isOpen={isOpen} onClose={onClose} />
         <div className="relative mx-auto pt-6 flex flex-col items-center justify-center text-[#D2DADF] bg-[url('./src/assets/nft/infynft/gradient.svg')] bg-cover">
           <div className="absolute top-0 z-[1] opacity-10 w-full">
             <img src={bg} alt="backimg" className="mx-auto" />
@@ -79,7 +87,12 @@ const InfyNft = () => {
             }`}
           >
             <div className="md:max-w-[1120px] flex items-center justify-between  md:px-0 md:gap-5 mb-8 md:mb-16 container  md:mx-auto">
-              <a href="https://vhagar.finance/" className="z-10" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://vhagar.finance/"
+                className="z-10"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img className="w-28 " src={svg_logo} alt="logo" />
               </a>
               <div className="gap-5 md:flex hidden z-10">
@@ -161,64 +174,7 @@ const InfyNft = () => {
               <p className="text-center text-lg mb-3">
                 Vhagar on Solana Staking Pool.
               </p>
-
-              {/* stake container */}
-              <div className="border-2 rounded-lg border-green-800 ">
-                <h3 className="capitalize text-lg border-b-2 border-green-800 items-center gap-2 flex p-4 py-2 ">
-                  <img src={logo} alt="" className="w-10" />{" "}
-                  <p className="text-center">Stake VGR to earn VGR</p>
-                </h3>
-
-                <div className="table-item">
-                  <p>APY</p>
-                  <p>0%</p>
-                </div>
-                <div className="table-item">
-                  <p>Available $VGR</p>
-                  <p>0</p>
-                </div>
-                <div className="table-item">
-                  <p>My Stakings</p>
-                  <p>0</p>
-                </div>
-                <div className="table-item">
-                  <p>Pending Rewards</p>
-                  <p>0</p>
-                </div>
-                <div className="table-item">
-                  <p>Unpaid Rewards</p>
-                  <p>0</p>
-                </div>
-                <div className="table-item">
-                  <p>Total Staked</p>
-                  <p>0.00</p>
-                </div>
-
-                <div className="flex flex-col py-5 px-4 gap-y-3 z-20">
-                  <button
-                    className="hover:border hover:border-white border border-transparent btn font-semibold text-white rounded-lg shadow-md bg-gradient-to-r from-[#5FE716] via-[#209B72] to-teal-500  cursor-pointer "
-                    onClick={() => {
-                      if (connected) {
-                        onOpen.call();
-                      } else {
-                        toast({
-                          title: "Access Denied.",
-                          description:
-                            "Please Connect your wallet to access this feature",
-                          status: "warning",
-                          duration: 9000,
-                          isClosable: true,
-                        });
-                      }
-                    }}
-                  >
-                    Open Pool
-                  </button>
-                  <button className="  border border-transparent btn font-semibold text-white rounded-lg bg-gradient-to-r from-[#5FE716] via-[#209B72] to-teal-500 shadow-md hover:border-green-600 hover:bg-none hover:text-green-600 transition-all delay-200 ease-in-out">
-                    GET VGR
-                  </button>
-                </div>
-              </div>
+           <StakeBoxWrapper program={program} />
             </div>
           </div>
           {/* FOOTER*/}

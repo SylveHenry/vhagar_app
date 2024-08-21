@@ -1,0 +1,62 @@
+[
+    {
+      "tag": {
+        "bronze": {}
+      },
+      "apy": {
+        "negative": 0,
+        "words": [
+          21508608,
+          78,
+          0
+        ],
+        "length": 2,
+        "red": null
+      }
+    },
+    {
+      "tag": {
+        "silver": {}
+      },
+      "apy": {
+        "negative": 0,
+        "words": [
+          32262912,
+          117,
+          0
+        ],
+        "length": 2,
+        "red": null
+      }
+    },
+    {
+      "tag": {
+        "gold": {}
+      },
+      "apy": {
+        "negative": 0,
+        "words": [
+          14839936,
+          176,
+          0
+        ],
+        "length": 2,
+        "red": null
+      }
+    },
+    {
+      "tag": {
+        "diamond": {}
+      },
+      "apy": {
+        "negative": 0,
+        "words": [
+          22259904,
+          264,
+          0
+        ],
+        "length": 2,
+        "red": null
+      }
+    }
+  ]

@@ -15,20 +15,22 @@ import {
 import ConnectButton from "./components/connect_button";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { walletOptions } from "./WalletOptions";
+import AppRoutes from "./routes";
 
 function App() {
   const network = WalletAdapterNetwork.Devnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(() => walletOptions, []);
+
   return (
     <>
-      {/* <ConnectionProvider endpoint="http://localhost:8899"> */}
-        <WalletProvider autoConnect wallets={wallets}>
+     
+        <WalletProvider autoConnect  wallets={wallets}>
           <WalletModalProvider>
-            <InfyNft />
+            <AppRoutes></AppRoutes>
           </WalletModalProvider>
         </WalletProvider>
-      {/* </ConnectionProvider> */}
+      
     </>
   );
 }

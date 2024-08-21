@@ -3,47 +3,55 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'xlox';
-    src: url('./Beldgo-Regular.otf');
+  font-family: "xlox";
+  src: url("./Beldgo-Regular.otf");
 }
-*{
-    font-family:'Open Sans'
-}
-
-.btn{
-    @apply px-4 py-2 text-lg;
+* {
+  font-family: "Open Sans";
 }
 
-.table-item{
-    @apply flex justify-between p-4 py-3;
+.btn {
+  @apply px-4 py-2 text-lg;
 }
 
-.default-gradient{
-    @apply bg-gradient-to-r from-green-500 via-green-500 to-teal-500;
+.table-item {
+  @apply flex justify-between p-4 py-3;
 }
 
-.text-gradient{
-    @apply default-gradient bg-clip-text text-transparent;
+.default-gradient {
+  @apply bg-gradient-to-r from-green-500 via-green-500 to-teal-500;
 }
 
-.page-item{
-    @apply mb-32
+.text-gradient {
+  @apply default-gradient bg-clip-text text-transparent;
 }
 
-.font-cartoon ,h1,h2,h3,h4,h5,h6{
-    font-family: 'xlox';
-    letter-spacing: 5px;
+.page-item {
+  @apply mb-32;
 }
 
-.bg-primary{
-    @apply !bg-[#050C24];
+.font-cartoon,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "xlox";
+  letter-spacing: 5px;
 }
 
-.btn:disabled{
-    @apply opacity-50;
-
-}
-.text-small{
-    font-size: 12px;
+.bg-primary {
+  @apply !bg-[#050C24];
 }
 
+.btn:disabled {
+  @apply opacity-50;
+}
+.text-small {
+  font-size: 12px;
+}
+
+p {
+  color: white;
+}
