@@ -1,9 +1,30 @@
+'use client';
+
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { buildCustomRoute } from "next/dist/server/lib/router-utils/filesystem";
+import VhagerManager from "./components/VhagerManager";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [userInfo, setUserInfo] = useState(null);
+  const [error, setError] = useState(null);
+  const [result, setResult] = useState(null);
+
+  useEffect(() => {
+    // Load user info from localStorage on component mount
+    const savedUserInfo = localStorage.getItem('userInfo');
+    if (savedUserInfo) {
+      setUserInfo(JSON.parse(savedUserInfo));
+    }
+  }, []);
+
+  const handleSetUserInfo = (info) => {
+    setUserInfo(info);
+    // Save user info to localStorage whenever it's updated
+    localStorage.setItem('userInfo', JSON.stringify(info));
+  };
+
   return (
     <>
       <div className={styles.contai}>
@@ -36,77 +57,36 @@ export default function Home() {
           <div className={styles.firstblock}>
             <div className={styles.stakinfo}>
               <h2 className="text-light">Your staking info</h2>
-              <button className={styles.updateInfoButton}>
+              <button className={styles.updateInfoButton} onClick={() => {
+                if (window.getUserInfo) {
+                  window.getUserInfo();
+                }
+              }}>
                 Update Info
               </button>
             </div>
-            <div className="p-4">
-              <p className={styles.info}>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas
-                recusandae atque cupiditate reiciendis minus! Quia ut nemo
-                maxime aspernatur iure ducimus alias, architecto aut quisquam
-                adipisci hic, corrupti optio ad?
-              </p>
+            <div className={`p-4 ${styles.stakingInfoContainer}`}>
+              {userInfo ? (
+                <div className={styles.infoGrid}>
+                  {userInfo.map((lock, index) => (
+                    <div key={index} className={styles.infoBox}>
+                      <h3 className={styles.infoBoxTitle}>{lock.tag}</h3>
+                      <p><strong>Locked Amount:</strong> {lock.lockedAmount}</p>
+                      <p><strong>Locked Reward:</strong> {lock.lockedReward}</p>
+                      <p><strong>Unlock Time:</strong> {lock.unlockTime}</p>
+                      <p><strong>Locked Time:</strong> {lock.lockedTime}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className={styles.info}>Connect your wallet to view your staking info.</p>
+              )}
             </div>
           </div>
-          <div className={styles.column}>
-            <div className={styles.cols}>
-              <div className="p-3">
-                <h3 className="text-light pb-3">STAKE</h3>
-                <p className="p-3" style={{ border: "1px solid #63b560" }}>
-                  amount
-                </p>
-                <select
-                  className={`form-select form-select-lg mb-3 text-light ${styles.customSelect}`}
-                  aria-label="Large select example"
-                >
-                  <option selected>Select Tier</option>
-                  <option value="1">Bronze</option>
-                  <option value="2">Silver</option>
-                  <option value="3">Gold</option>
-                  <option value="4">Diamond</option>
-                </select>
-                <button className={styles.executeButton}>
-                  Execute
-                </button>
-              </div>
-            </div>
-            <div className={styles.cols}>
-              <div className="p-3">
-                <h3 className="text-light pb-3">AUTOCOMPOUND</h3>
-                <select
-                  className={`form-select form-select-lg mb-3 text-light ${styles.customSelect}`}
-                  aria-label="Large select example"
-                >
-                  <option selected>Select Tier</option>
-                  <option value="1">Bronze</option>
-                  <option value="2">Silver</option>
-                  <option value="3">Gold</option>
-                  <option value="4">Diamond</option>
-                </select>
-                <button className={styles.executeButton}>
-                  Execute
-                </button>
-              </div>
-            </div>
-            <div className={styles.cols}>
-              <div className="p-3">
-                <h3 className="text-light pb-3">UNSTAKE</h3>
-                <select
-                  className={`form-select form-select-lg mb-3 text-light ${styles.customSelect}`}
-                  aria-label="Large select example"
-                >
-                  <option selected>Select Tier</option>
-                  <option value="1">Bronze</option>
-                  <option value="2">Silver</option>
-                  <option value="3">Gold</option>
-                  <option value="4">Diamond</option>
-                </select>
-                <button className={styles.executeButton}>
-                  Execute
-                </button>
-              </div>
-            </div>
+          <VhagerManager setUserInfo={handleSetUserInfo} setError={setError} setResult={setResult} />
+          <div className={styles.displayArea}>
+            {error && <p className="text-danger">{error}</p>}
+            {result && <p className="text-success">{result}</p>}
           </div>
           <div className={`${styles.noteContainer} d-flex flex-column flex-md-row align-items-center justify-content-center`}>
             <div className={`${styles.exclamationImageContainer} d-none d-md-block`}>
@@ -115,7 +95,7 @@ export default function Home() {
                 alt="Exclamation Mark" 
                 width={70} 
                 height={112} 
-                layout="responsive"
+                style={{width: '100%', height: 'auto'}}
               />
             </div>
             <div className={styles.noteText}>

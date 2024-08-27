@@ -3,6 +3,8 @@
 import debounce from "lodash.debounce";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import styles from "../page.module.css";
 
 const Navbar = () => {
   const [navbarClass, setNavbarClass] = useState(
@@ -54,16 +56,6 @@ const Navbar = () => {
         <a className="navbar-brand text-light ps-2" href="#">
           <Image src={logoSrc} width={128} height={77} alt="Logo" />
         </a>
-        <a
-          className="ms-auto nav-item stake-button me-3 stake-small"
-          href="https://app.vhagar.finance/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <button className="btn" type="button">
-            CONNECT WALLET
-          </button>
-        </a>
         <button
           className="navbar-toggler"
           type="button"
@@ -112,16 +104,23 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <a
-          className="ms-auto nav-item stake-button me-3 stake-large"
-          href="https://app.vhagar.finance/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <button className="btn" type="button">
-            CONNECT WALLET
-          </button>
-        </a>
+        <div className="ms-auto">
+          <style jsx global>{`
+            .wallet-adapter-dropdown {
+              background-color: #0a194970 !important;
+              border: 2px solid #63b560 !important;
+              border-radius: 10px !important;
+            }
+            .wallet-adapter-dropdown-list-item {
+              background-color: transparent !important;
+              color: white !important;
+            }
+            .wallet-adapter-dropdown-list-item:hover {
+              background-color: #63b560 !important;
+            }
+          `}</style>
+          <WalletMultiButton className={styles.walletButton} />
+        </div>
       </div>
     </nav>
   );
