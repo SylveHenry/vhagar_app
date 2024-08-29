@@ -25,8 +25,8 @@ export default function Home() {
 
   useEffect(() => {
     if (wallet.connected) {
-      animateValue(setTotalStaked, 0, 80000000, 2000);
-      animateValue(setTotalClaimable, 0, 30000000, 2000);
+      animateValue(setTotalStaked, 0, 1338429516, 2000);
+      animateValue(setTotalClaimable, 0, 761037824, 2000);
     } else {
       setTotalStaked(0);
       setTotalClaimable(0);
@@ -75,10 +75,10 @@ export default function Home() {
               <li className={styles.blocli}>60 Days</li>
               <li className={styles.blocli}>120 Days</li>
               <li className={`${styles.blocli} ${styles.headerItem}`}>Reward Percentage</li>
-              <li className={styles.blocli}>15.77%</li>
-              <li className={styles.blocli}>30.45%</li>
-              <li className={styles.blocli}>56.76%</li>
-              <li className={styles.blocli}>10.51%</li>
+              <li className={styles.blocli}>10.00%</li>
+              <li className={styles.blocli}>30.00%</li>
+              <li className={styles.blocli}>90.00%</li>
+              <li className={styles.blocli}>270.00%</li>
             </div>
           </div>
           <div className={styles.firstblock}>
