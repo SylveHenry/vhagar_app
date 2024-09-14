@@ -75,7 +75,7 @@ const Footer = () => {
             </li>
             <li className="coll">
               <a
-                href="https://birdeye.so/"
+                href="https://birdeye.so/token/4UvV46RjhL4Xvy1DeGWBHJ2EWUwzgNN2EzUumMqMVDQA?chain=solana"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -87,7 +87,7 @@ const Footer = () => {
         <div className="co-cont">
           <div className="d-flex justify-content-center align-items-center pt-4">
             <a
-              href="https://discord.com"
+              href="https://discord.com/invite/3fKQTuYSYP"
               target="_blank"
               rel="noopener noreferrer"
               className="pe-2"
@@ -95,7 +95,7 @@ const Footer = () => {
               <Image src="/discord.png" width={50} height={50} alt="Discord" className="social-icon" />
             </a>
             <a
-              href="https://telegram.org"
+              href="https://t.me/Vhagar_on_Sol"
               target="_blank"
               rel="noopener noreferrer"
               className="pe-2"
@@ -103,7 +103,7 @@ const Footer = () => {
               <Image src="/telegram.png" width={50} height={50} alt="Telegram" className="social-icon" />
             </a>
             <a
-              href="https://x.com"
+              href="https://x.com/Vhagar_on_Sol"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-light"
